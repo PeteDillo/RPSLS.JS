@@ -1,4 +1,6 @@
 class Player{
+constructor()
+
 
 }
 
@@ -7,5 +9,5 @@ class Human{
 }
 
 class AI{
-//jdfkskodf
+
 }
