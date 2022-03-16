@@ -1,97 +1,166 @@
-//game logic
-'use strict'
+"use strict";
 const prompt = require("prompt-sync")();
-const player = require("player")();
+const Human = require("./human");
+const Ai = require("./ai");
 
-const gameStart = () => {
-  while (playerOne.numberOfWins < 3 && playerTwo.numberOfWins < 3) {
-    Console.log(playerOne.numberOfWins);
-    let playerOneChoice = playerOne.GetChoice();
-    let playerTwoChoice = playerTwo.GetChoice();
-    if (playerOneChoice == "rock") {
-      if (playerTwoChoice == "rock") {
-        Console.log("Rock ties with rock!");
-      } else if (playerTwoChoice == "paper") {
-        Console.log("Paper covers rock! Player two wins");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "scissors") {
-        Console.log("Rock smashes scissors! Player one wins");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "lizard") {
-        Console.log("Rock smashes lizard! Player one wins");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "spock") {
-        Console.log("Spock vaporizes rock! Player two wins");
-        playerTwo.numberOfWins += 1;
-      }
-    } else if (playerOneChoice == "paper") {
-      if (playerTwoChoice == "rock") {
-        Console.log("Paper covers rock! Player one wins");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "paper") {
-        Console.log("Paper ties with paper!");
-      } else if (playerTwoChoice == "scissors") {
-        Console.log("scissors cuts paper! player two wins");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "lizard") {
-        Console.log("Lizard eats paper! Player two wins");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "spock") {
-        Console.log("Paper disproves spock! player one wins");
-        playerOne.numberOfWins += 1;
-      }
-    } else if (playerOneChoice == "scissors") {
-      if (playerTwoChoice == "rock") {
-        Console.log("Rock crushed paper! Player two wins");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "paper") {
-        Console.log("Scissors cuts paper! Player one wins");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "scissors") {
-        Console.log("Scissors ties with scissors!");
-      } else if (playerTwoChoice == "lizard") {
-        Console.log("scissors decapitates lizard, player 1 wins!");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "spock") {
-        Console.log("spock smashes scissors, player 2 wins.");
-        playerTwo.numberOfWins += 1;
-      }
-    } else if (playerOneChoice == "lizard") {
-      if (playerTwoChoice == "rock") {
-        Console.log("Rock crushed lizard! Player two wins");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "paper") {
-        Console.log("Lizard eats paper! Player one wins");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "scissors") {
-        Console.log("scissors decapitates lizard, player 2 wins.");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "lizard") {
-        Console.log("Lizard ties lizard!");
-      } else if (playerTwoChoice == "spock") {
-        Console.log("lizard poisons spock, player 1 wins!");
-        playerOne.numberOfWins += 1;
-      }
-    } else if (playerOneChoice == "spock") {
-      if (playerTwoChoice == "rock") {
-        Console.log("spock vaporizes rock, player 2 wins.");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "paper") {
-        Console.log("paper disproves spock, player 2 wins.");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "scissors") {
-        Console.log("spock smashes scissors, player 1 wins!");
-        playerOne.numberOfWins += 1;
-      } else if (playerTwoChoice == "lizard") {
-        Console.log("lizard poisons spock, player 2 wins.");
-        playerTwo.numberOfWins += 1;
-      } else if (playerTwoChoice == "spock") {
-        Console.log("Spock ties spock!");
-      }
+class Game {
+    constructor(){
+        this.player01 = new Human('player01');
+        this.player02;
+        this.turn;
     }
-  }
-};
+    
+    runGame(){
+        this.welcome()
+        this.displayRules()
+        this.gameStartUp()
+        this.createRound()
+        this.decideWinner()
+    }
+
+    welcome(){
+        console.log("Welcome to Rock Paper Scissors Lizard Spock!");
+    }
+
+    displayRules(){
+        console.log("RULES:");
+        console.log("Rule#1: Game is set to best of three\nRule#2: There are no points for ties");
+        console.log("HOW TO WIN:");
+        console.log("Scissors cuts Paper\nPaper covers Rock\nRock crushes Lizard\nLizard poisons Spock\nSpock smashes Scissors");
+        console.log("Scissors decapitates Lizard\nLizard eats Paper\nPaper disproves Spock\nSpock vaporizes Rock\nRock crushes Scissors");
+    }
+    
+    gameStartUp(){
+        this.player01.defineName();
+
+        let userInput = parseInt(prompt("Who would you like to play against? Type 1 for Computer, Type 2 for Human: "));
+
+        switch(userInput){
+            case 1:
+                this.player02 = new Ai();
+                break;
+            case 2:
+                this.player02 = new Human('player02');
+                break;
+            default:
+                console.log("Invalid input! Try again!");
+                this.gameStartUp();
+                break; 
+        }
+    }
+
+    createRound(){
+        while (this.player01.score < 2 && this.player02.score < 2) {
+            this.player01.chooseGesture();
+            this.player02.chooseGesture();
+            this.compareGestures(this.player01.choice, this.player02.choice);
+        }
+        this.decideWinner();
+    }
+
+    decideWinner(){
+        if (this.player01.score == 2){
+            console.log(`${this.player01.name} wins the game!`);
+        }else{
+            console.log(`${this.player02.name} wins the game!`);
+        }
+        this.playAgain();
+    }
+
+    playAgain(){
+        let userInput = prompt("Play Again? y/n ").toLowerCase();
+        switch(userInput){
+            case "y":
+                this.player01 = new Human('player01');
+                this.player02 = null;
+                this.runGame();
+                break;
+            case "n":
+                console.log("Goodbye");
+                break;
+            default:
+                console.log("Invalid input! Try again!")
+                break;
+        }
+    }
+  
+    compareGestures(gesture01, gesture02){
+        switch(gesture01){
+            case "rock":
+                if(gesture02 == "scissors" || gesture02 == "lizard"){
+                    this.player1Wins();
+                    this.createRound();
+                }else if(gesture02 == "paper" || gesture02 == "spock"){
+                    this. player2Wins();
+                    this.createRound();
+                }else{
+                    console.log("It's a tie!");
+                    this.createRound();
+                }
+                break;
+            case "paper":
+                if(gesture02 == "rock" || gesture02 == "spock"){
+                    this.player1Wins();
+                    this.createRound();
+                }else if(gesture02 == "scissors" || gesture02 == "lizard"){
+                    this. player2Wins();
+                    this.createRound();
+                }else{
+                    console.log("It's a tie!");
+                    this.createRound();
+                }
+                break;
+            case "scissors":
+                if(gesture02 == "paper" || gesture02 == "lizard"){
+                    this.player1Wins();
+                    this.createRound();
+                }else if(gesture02 == "rock" || gesture02 == "spock"){
+                    this. player2Wins();
+                    this.createRound();
+                }else{
+                    console.log("It's a tie!");
+                    this.createRound();
+                }
+                break;
+            case "lizard":
+                if(gesture02 == "spock" || gesture02 == "paper"){
+                    this.player1Wins();
+                    this.createRound();
+                }else if(gesture02 == "rock" || gesture02 == "scissors"){
+                    this. player2Wins();
+                    this.createRound();
+                }else{
+                    console.log("It's a tie!");
+                    this.createRound();
+                }
+                break;
+            case "spock":
+                if(gesture02 == "rock" || gesture02 == "scissors"){
+                    this.player1Wins();
+                    this.createRound();
+                }else if(gesture02 == "lizard" || gesture02 == "paper"){
+                    this. player2Wins();
+                    this.createRound();
+                }else{
+                    console.log("It's a tie!");
+                    this.createRound();
+                }
+                break;
+        }
+    }
+
+    player1Wins(){
+        console.log(`${this.player01.name} wins this round!`)
+        this.player01.score++
+    }
+
+    player2Wins(){
+        console.log(`${this.player02.name} wins this round!`)
+        this.player02.score++
+    }
+    
+
+}
 
 
-const _gameStart = gameStart;
-export { _gameStart as gameStart };
+module.exports = Game;

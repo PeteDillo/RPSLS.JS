@@ -1,46 +1,27 @@
-class Player{
-constructor()
+"use strict";
+const prompt = require("prompt-sync")();
 
-
-}
-
-class Human{
-    constructor(name) {
+class Player {
+    constructor(name){
+        this.score = 0;
+        this.choice = " ";
+        this.gestureList = ["rock","paper","scissors","lizard","spock"];
         this.name = name;
-        this.count = 0;
-        this.gestures = {
-            
-            0: {
-                name: 'rock',
-                weakness: ['paper', 'spock']
-            },
-            
-            1: {
-                name: 'paper',
-                weakness: ['scissors', 'lizard']
-            },
-            
-            2: {
-                name: 'scissors',
-                weakness: ['rock', 'spock']
-            },
-            
-            3: {
-                name: 'lizard',
-                weakness: ['rock', 'scissors']
-            },
-            
-            4: {
-                name: 'spock',
-                weakness: ['lizard', 'paper']
-            },
-        }
-        this.hand = this.gestures.rock;
     }
 
+    chooseGesture(){
+        console.log("Choose your gesture:");
+        for (let i = 0; i < this.gestureList.length; i++) {
+            console.log(`Enter ${i} for ${this.gestureList[i]}`);
+        }
+        this.choice = this.gestureList[parseInt(prompt())]
+        if (this.gestureList.includes(this.choice)) {
+            console.log(`${this.name} selected ${this.choice}`);
+        }else{
+            console.log("Please enter a valid selection!");
+            this.chooseGesture();
+        }
+    }
 }
 
-class AI{
-    constructor()
-
-}
+module.exports = Player;

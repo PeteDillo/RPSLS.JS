@@ -1,2 +1,5 @@
 //game start
-gameStart();
+const Game = require("./game");
+let startGame = new Game()
+
+startGame.runGame();
