@@ -2,11 +2,11 @@
 const prompt = require("prompt-sync")();
 
 class Player {
-    constructor(name){
+    constructor(){
         this.score = 0;
         this.choice = " ";
         this.gestureList = ["rock","paper","scissors","lizard","spock"];
-        this.name = name;
+        
     }
 
     chooseGesture(){
