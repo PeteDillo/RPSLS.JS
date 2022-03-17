@@ -18,7 +18,7 @@ class gesture{
                 return (this.chooseGesture(player));
         }
 
-        this.hand = 1;
+       
     }
 
 }
