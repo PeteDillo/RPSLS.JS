@@ -58,12 +58,15 @@ class Game {
   }
 
   createRound() {
+    let winnerDecided = true
     do {
       this.player01.chooseGesture();
       this.player02.chooseGesture();
       this.compareGestures(this.player01.choice, this.player02.choice);
-    } while (this.player01.score < 2 && this.player02.score < 2);
-    this.decideWinner();
+      if(this.player01.score === 2 || this.player02.score === 2){
+        winnerDecided = false
+      }
+    } while (winnerDecided);
   }
 
   decideWinner() {
