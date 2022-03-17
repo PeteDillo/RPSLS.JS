@@ -5,11 +5,20 @@ class gesture{
         this.attack = prop.attack;
     }
 
-    attack(attack, weakness){
 
+    fight(playerOne, playerTwo){
 
+        if(playerTwo.weakness.includes(playerOne.attack)){
+            return playerTwo.health - 10
+            
+        }
+        else if(playerOne.weakness.includes(playerTwo.attack)){
+            return playerOne.health - 10
+
+        }
+else{return "Tie"}
     }
 }
-module.exports = player
+
 
 
