@@ -2,9 +2,9 @@
 const Player = require("./player");
 
 class Ai extends Player{
-    constructor(){
+    constructor(name){
         super();
-        this.name = "Siri"
+        this.name = name
     }
 
     chooseGesture(){

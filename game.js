@@ -46,7 +46,7 @@ class Game {
 
     switch (userInput) {
       case 1:
-        this.player02 = new Ai();
+        this.player02 = new Ai('Siri');
         break;
       case 2:
         this.player02 = new Human("player02");

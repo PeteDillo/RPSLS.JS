@@ -6,6 +6,7 @@ class Player {
         this.score = 0;
         this.choice = " ";
         this.gestureList = ["rock","paper","scissors","lizard","spock"];
+        this.health = 30
         
     }
 
