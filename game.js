@@ -16,7 +16,7 @@ class Game {
     this.gameStartUp();
     this.createRound();
     this.decideWinner();
-    this.playAgain();
+    return this.playAgain();
   }
 
   welcome() {
@@ -58,15 +58,12 @@ class Game {
   }
 
   createRound() {
-    let winnerDecided = true
-    do {
+    while (this.player01.score < 2 && this.player02.score < 2) {
       this.player01.chooseGesture();
       this.player02.chooseGesture();
       this.compareGestures(this.player01.choice, this.player02.choice);
-      if(this.player01.score === 2 || this.player02.score === 2){
-        winnerDecided = false
-      }
-    } while (winnerDecided);
+    }
+    return this.decideWinner();
   }
 
   decideWinner() {
@@ -101,60 +98,57 @@ class Game {
           this.createRound();
         } else if (gesture02 == "paper" || gesture02 == "spock") {
           this.player2Wins();
-          this.createRound();
+          return this.createRound();
         } else {
           console.log("It's a tie!");
-          this.createRound();
+          return this.createRound();
         }
         break;
       case "paper":
         if (gesture02 == "rock" || gesture02 == "spock") {
           this.player1Wins();
-          this.createRound();
+          return this.createRound();
         } else if (gesture02 == "scissors" || gesture02 == "lizard") {
           this.player2Wins();
-          this.createRound();
+          return this.createRound();
         } else {
           console.log("It's a tie!");
-          this.createRound();
+          return this.createRound();
         }
-        break;
       case "scissors":
         if (gesture02 == "paper" || gesture02 == "lizard") {
           this.player1Wins();
-          this.createRound();
+          return this.createRound();
         } else if (gesture02 == "rock" || gesture02 == "spock") {
           this.player2Wins();
-          this.createRound();
+          return this.createRound();
         } else {
           console.log("It's a tie!");
-          this.createRound();
+          return this.createRound();
         }
         break;
       case "lizard":
         if (gesture02 == "spock" || gesture02 == "paper") {
           this.player1Wins();
-          this.createRound();
+          return this.createRound();
         } else if (gesture02 == "rock" || gesture02 == "scissors") {
           this.player2Wins();
-          this.createRound();
+          return this.createRound();
         } else {
           console.log("It's a tie!");
-          this.createRound();
+          return this.createRound();
         }
-        break;
       case "spock":
         if (gesture02 == "rock" || gesture02 == "scissors") {
           this.player1Wins();
-          this.createRound();
+          return this.createRound();
         } else if (gesture02 == "lizard" || gesture02 == "paper") {
           this.player2Wins();
-          this.createRound();
+          return this.createRound();
         } else {
           console.log("It's a tie!");
-          this.createRound();
+          return this.createRound();
         }
-        break;
     }
   }
 
