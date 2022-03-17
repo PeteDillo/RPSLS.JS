@@ -17,9 +17,6 @@ class gesture{
                 console.log(`\n${player.name} : Please choose a hand\n0=Rock\n1=Paper\n2=Scissors\n3=Lizard\n4=Spock\n`)
                 return (this.chooseGesture(player));
         }
-
-       
     }
-
 }
 module.exports = player

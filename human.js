@@ -7,5 +7,4 @@ class Human extends Player{
         this.name = name
     }
 }
-
 module.exports = Human;
