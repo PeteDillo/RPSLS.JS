@@ -1,8 +1,8 @@
-class gesture{
-    constructor(prop){
-        this.name = prop.name;
-        this.weakness = prop.weakness;
-        this.attack = prop.attack;
+class Gesture{
+    constructor(name, attack, weakness ){
+        this.name = name;
+        this.weakness = weakness;
+        this.attack = attack;
     }
 
 
@@ -21,4 +21,4 @@ else{return "Tie"}
 }
 
 
-
+module.exports = Gesture;
